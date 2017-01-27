@@ -17,24 +17,37 @@ fideligard.factory('stockDataService', [
       return str;
     }
 
+    var loop = function loop(){
+      var arr = [];
+      for(var i = 0; i < _symbols.length; i++){
+        var str = "where%20symbol%3D%22" + _symbols[i] + "%22";
+        arr.push($http.get(baseString + str + endString))
+      }
+      return arr;
+    }
+
+    var setData = function setData(quote){
+      for(var i = 0; i < quote.length; i++){
+        if(!_raw[quote[i].Symbol]) _raw[quote[i].Symbol] = {};
+
+        _raw[quote[i].Symbol][quote[i].Date] = {
+          open: quote[i].Open,
+          high: quote[i].High,
+          low: quote[i].Low,
+          close: quote[i].Close,
+          volume: quote[i].Volume
+        }
+      }
+    }
+
     var getStockData = function getStockData(){
       if(_.isEmpty(_raw)){
-        return $http.get(baseString + buildSymbolList() + endString)
-                    .then(function(resp){
-                      var quote = resp.data.query.results.quote
-                      for(var i = 0; i < quote.length; i++){
-                        if(!_raw[quote[i].Symbol]) _raw[quote[i].Symbol] = {};
-
-                        _raw[quote[i].Symbol][quote[i].Date] = {
-                          open: quote[i].Open,
-                          high: quote[i].High,
-                          low: quote[i].Low,
-                          close: quote[i].Close,
-                          volume: quote[i].Volume
-                        }
-                      }
-                      return _raw;
-                    })
+        return $q.all(loop()).then(function(datas){
+          for(var i = 0; i < datas.length; i++){
+            setData(datas[i].data.query.results.quote)
+          }
+          return _raw
+        })
       }
       return $q(function(resolve){ resolve(_raw) });
     }

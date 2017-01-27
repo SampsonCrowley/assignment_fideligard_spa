@@ -5,7 +5,10 @@ fideligard.controller('StockDataCtrl', [
     stockDataService.get().then(function(data){
       $scope.quotes = data;
     })
-    $scope.$on('dateChange', stockDataService.update);
+    $scope.$on('dateChange', function(e, date) {
+      stockDataService.update(date);
+      $scope.currentDate = date;
+    });
 
   }
 ])

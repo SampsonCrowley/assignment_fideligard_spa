@@ -25,7 +25,7 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body>
+  <body novalidate>
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -33,9 +33,9 @@
         </div>
 
         <ul class="nav navbar-nav navbar-right">
-          <li><a ui-sref="portfolio">Parent</a></li>
-          <li><a ui-sref="transactions">Child</a></li>
-          <li><a ui-sref="trade">Grandchild</a></li>
+          <li><a ui-sref="portfolio">Portfolio</a></li>
+          <li><a ui-sref="transactions">Transactions</a></li>
+          <li><a ui-sref="trade">Trade</a></li>
         </ul>
       </div><!-- /.container-fluid -->
     </nav>
@@ -72,6 +72,7 @@
     <!-- Controllers -->
     <script src="js/controllers/date-widget.controller.js" charset="utf-8"></script>
     <script src="js/controllers/stock-data.controller.js" charset="utf-8"></script>
+    <script src="js/controllers/trade.controller.js" charset="utf-8"></script>
 
 
   </body>

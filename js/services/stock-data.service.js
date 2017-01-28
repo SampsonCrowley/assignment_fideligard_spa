@@ -7,6 +7,7 @@ fideligard.factory('stockDataService', [
     // API_KEY = "B4sTzjR9SaZDuvJpvq4W";
     // endString = "&date.gte=2014-01­-01&date.lte=2014-­12-­31&qopts.columns=ticker,date,open,high,low,close,volume",
     // fullString = baseString + API_KEY + endString;
+    // https://www.quandl.com/api/v3/datatables/WIKI/PRICES.json?api_key=B4sTzjR9SaZDuvJpvq4W&date.gte=2014-01­-01&date.lte=2014-­12-­31&qopts.columns=ticker,date,open,high,low,close,volume
 
     // var loop = function loop(){
     //   var arr = [];
@@ -72,7 +73,6 @@ fideligard.factory('stockDataService', [
     var _minusDays = function _minusDaysx(date, numDays) {
       var dateCopy = new Date(date);
       var newDate = new Date(dateCopy.setDate(dateCopy.getDate() - numDays));
-      console.log(newDate)
       return newDate.toISOString().slice(0,10);
     }
 

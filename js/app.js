@@ -19,7 +19,7 @@ fideligard.config([
                         controller: "DateWidgetCtrl"
                       },
                       'userData':{
-                        template: '<ui-view/>'
+                        templateUrl: 'js/views/user-data.html'
                       }
                     }
                   })
@@ -29,6 +29,9 @@ fideligard.config([
                     views:{
                       '':{
                         templateUrl:"js/views/portfolio.html"
+                      },
+                      'userDataHeader': {
+                        template: "Portfolio"
                       }
                     }
                   })
@@ -39,15 +42,22 @@ fideligard.config([
                       '':{
                         templateUrl:"js/views/transactions.html"
                       },
+                      'userDataHeader': {
+                        template: "Transactions"
+                      }
                     }
                   })
                   .state('trade',{
-                    url:"trade",
+                    url:"trade/:symbol",
                     parent: 'user',
                     views:{
                       '':{
-                        templateUrl:"js/views/trade.html"
+                        templateUrl:"js/views/trade.html",
+                        controller: 'TradeCtrl'
                       },
+                      'userDataHeader': {
+                        template: "Trade"
+                      }
                     }
                   })
   }

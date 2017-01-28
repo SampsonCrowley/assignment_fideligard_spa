@@ -14,5 +14,6 @@
 //= require ui-bootstrap.min.js
 //= require angular-ui-router.min.js
 //= require lodash.core.min.js
+//= require loading-bar.min.js
 //= require angular
 //= require_tree .

@@ -1,6 +1,6 @@
 fideligard.factory('stockDataService', [
-  '$http', '$q', '_', 'dateWidgetService',
-  function($http, $q, _, dateWidgetService){
+  '$http', '$q', '$timeout', '_', 'dateWidgetService',
+  function($http, $q, $timeout, _, dateWidgetService){
     var _raw = {},
      _data = {},
      _today, _oneDayAgo, _sevenDaysAgo, _thirtyDaysAgo;
@@ -26,7 +26,9 @@ fideligard.factory('stockDataService', [
     }
 
     var getStockData = function getStockData(day){
-      if(_.isEmpty(_raw) || !_raw[day]){
+
+      console.log(_raw[day])
+      if(_.isEmpty(_raw) || (day && !_raw[day])){
         var dStr = (day ? '/' + day : "")
         return $http.get('/stocks' + dStr).then(function(resp){
           // for(var i = 0; i < datas.length; i++){
@@ -39,12 +41,22 @@ fideligard.factory('stockDataService', [
       return $q(function(resolve){ resolve(_raw) });
     }
 
+    var _clearData = function _clearData(){
+      for(sym in _data){
+        delete _data[sym]
+      }
+    }
+
     var updateData = function updateData(date){
-      _today = _minusDays(date, 0),
-      _oneDayAgo = _minusDays(date, 1),
-      _sevenDaysAgo = _minusDays(date, 7),
-      _thirtyDaysAgo = _minusDays(date, 30);
-      requery();
+      _clearData();
+      $timeout(function (){
+        _today = _minusDays(date, 0),
+        _oneDayAgo = _minusDays(date, 1),
+        _sevenDaysAgo = _minusDays(date, 7),
+        _thirtyDaysAgo = _minusDays(date, 30);
+        // angular.copy({}, _data);
+        requery();
+      })
 
       return _data;
     }
@@ -57,13 +69,11 @@ fideligard.factory('stockDataService', [
         getStockData(_thirtyDaysAgo)
       ])
       .then(function(){
-        console.log("done")
         setData()
       });
     }
 
     var setData = function setData(){
-      angular.copy({}, _data);
       for(symbol in _raw[_today]){
         _data[symbol] = { symbol: symbol };
         var high = _raw[_today][symbol].high;
@@ -75,9 +85,12 @@ fideligard.factory('stockDataService', [
     }
 
     var getData = function getData(){
-      return getStockData().then(function(){
-        return updateData(dateWidgetService.get())
-      })
+      if(_.isEmpty(_data)){
+        return $q(function(resolve){
+          resolve(updateData(dateWidgetService.get()))
+        })
+      }
+      return $q(function(resolve){ resolve(_data) });
     }
 
     var _minusDays = function _minusDays(date, numDays) {

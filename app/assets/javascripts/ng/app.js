@@ -1,9 +1,10 @@
-var fideligard = angular.module('fideligard', ['ui.router', 'ui.bootstrap'])
+var fideligard = angular.module('fideligard', ['ui.router', 'ui.bootstrap', 'angular-loading-bar'])
                         .constant('_', window._);
 
 fideligard.config([
-  '$stateProvider', '$urlRouterProvider',
-  function($stateProvider, $urlRouterProvider, RestangularProvider){
+  '$stateProvider', '$urlRouterProvider', 'cfpLoadingBarProvider',
+  function($stateProvider, $urlRouterProvider, cfpLoadingBarProvider){
+    cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
 
     $urlRouterProvider.otherwise('/portfolio');
 

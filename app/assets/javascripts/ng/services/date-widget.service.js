@@ -11,7 +11,7 @@ fideligard.factory('dateWidgetService', [
     // parseDate = function parseDate(str){
     //   return Date.parse(_date.value);
     // }
-    var _date = new Date('2014-02-03 00:00:00');
+    var _date = new Date();
 
     getDate = function getDate(){
       return _date

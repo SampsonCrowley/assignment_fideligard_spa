@@ -70,7 +70,7 @@ fideligard.factory('stockDataService', [
       })
     }
 
-    var _minusDays = function _minusDaysx(date, numDays) {
+    var _minusDays = function _minusDays(date, numDays) {
       var dateCopy = new Date(date);
       var newDate = new Date(dateCopy.setDate(dateCopy.getDate() - numDays));
       return newDate.toISOString().slice(0,10);

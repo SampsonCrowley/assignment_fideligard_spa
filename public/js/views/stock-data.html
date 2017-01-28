@@ -1,0 +1,26 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Stocks for {{ currentDate | date:'dd/MM/yyyy' }}</h3>
+  </div>
+  <div class="panel-body">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>symbol</th>
+          <th>Price</th>
+          <th>1d</th>
+          <th>7d</th>
+          <th>30d</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="quote in quotes" stock-data="quote"></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="panel-footer">
+
+  </div>
+</div>

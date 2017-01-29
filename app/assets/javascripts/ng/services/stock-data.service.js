@@ -27,7 +27,6 @@ fideligard.factory('stockDataService', [
 
     var getStockData = function getStockData(day){
 
-      console.log(_raw[day])
       if(_.isEmpty(_raw) || (day && !_raw[day])){
         var dStr = (day ? '/' + day : "")
         return $http.get('/stocks' + dStr).then(function(resp){

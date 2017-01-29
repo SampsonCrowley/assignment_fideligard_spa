@@ -1,4 +1,4 @@
-var fideligard = angular.module('fideligard', ['ui.router', 'ui.bootstrap', 'angular-loading-bar'])
+var fideligard = angular.module('fideligard', ['ui.router', 'ui.bootstrap', 'angular-loading-bar', 'angular-memory-stats'])
                         .constant('_', window._);
 
 fideligard.config([

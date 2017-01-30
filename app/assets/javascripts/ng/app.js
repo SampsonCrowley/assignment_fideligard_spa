@@ -2,10 +2,11 @@ var fideligard = angular.module('fideligard', ['ui.router', 'ui.bootstrap', 'ang
                         .constant('_', window._);
 
 fideligard.config([
-  '$stateProvider', '$urlRouterProvider', 'cfpLoadingBarProvider',
-  function($stateProvider, $urlRouterProvider, cfpLoadingBarProvider){
+  '$stateProvider', '$urlRouterProvider', '$locationProvider', 'cfpLoadingBarProvider',
+  function($stateProvider, $urlRouterProvider, $locationProvider, cfpLoadingBarProvider){
     cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
 
+    $locationProvider.html5Mode(true);
     $urlRouterProvider.otherwise('/portfolio');
 
     $stateProvider.state('user',{
@@ -30,7 +31,8 @@ fideligard.config([
                     parent: 'user',
                     views:{
                       '':{
-                        templateUrl:"js/views/portfolio.html"
+                        templateUrl:"js/views/portfolio.html",
+                        controller: 'PortfolioIndexCtrl'
                       },
                       'userDataHeader': {
                         template: "Portfolio"
@@ -40,6 +42,7 @@ fideligard.config([
                   .state('transactions',{
                     url:"transactions",
                     parent: 'user',
+                    abstract: true,
                     views:{
                       '':{
                         templateUrl:"js/views/transactions.html"
@@ -47,6 +50,24 @@ fideligard.config([
                       'userDataHeader': {
                         template: "Transactions"
                       }
+                    }
+                  })
+                  .state('transactions.index',{
+                    url:"",
+                    views:{
+                      '':{
+                        templateUrl:"js/views/transactions/index.html",
+                        controller: "TransactionsIndexCtrl"
+                      },
+                    }
+                  })
+                  .state('transactions.show',{
+                    url:"/:id",
+                    views:{
+                      '':{
+                        templateUrl:"js/views/transactions/show.html",
+                        controller: "TransactionsShowCtrl"
+                      },
                     }
                   })
                   .state('trade',{

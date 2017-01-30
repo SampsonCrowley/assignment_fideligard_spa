@@ -1,0 +1,30 @@
+<td>
+  {{ portfolioItem.symbol }}
+</td>
+<td>
+  {{ portfolioItem.quantity }}
+</td>
+<td>
+  {{ portfolioItem.cost | currency }}
+</td>
+<td>
+  {{ currentValue() | currency}}
+</td>
+<td>
+  {{ (currentValue() - portfolioItem.cost) | currency }}
+</td>
+<td>
+  {{ stock.price | currency }}
+</td>
+<td>
+  {{ stock.one | currency }}
+</td>
+<td>
+  {{ stock.seven | currency }}
+</td>
+<td>
+  {{ stock.thirty | currency }}
+</td>
+<td>
+  <a ui-sref="trade({symbol: stock.symbol})">Trade</a>
+</td>

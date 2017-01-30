@@ -1,0 +1,33 @@
+<table class="table table-striped table-hover table-bordered">
+  <thead>
+    <th>Cost Basis</th>
+    <th>Current Value</th>
+    <th>Profit</th>
+    <th>Current Price</th>
+    <th>1d</th>
+    <th>7d</th>
+    <th>30d</th>
+  </thead>
+  <tbody>
+    <tr portfolio-aggregate="aggregate"></tr>
+  </tbody>
+</table>
+
+<table class="table table-striped table-hover table-bordered">
+  <thead>
+    <th>Symbol</th>
+    <th>Quantity</th>
+    <th>Cost Basis</th>
+    <th>Current Value</th>
+    <th>Profit</th>
+    <th>Current Price</th>
+    <th>1d</th>
+    <th>7d</th>
+    <th>30d</th>
+    <th>Trade?</th>
+  </thead>
+  <tbody>
+    <tr portfolio-cash="cash"></tr>
+    <tr ng-repeat="item in portfolio" portfolio-item="item"></tr>
+  </tbody>
+</table>

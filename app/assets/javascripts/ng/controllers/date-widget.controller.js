@@ -1,4 +1,3 @@
-
 fideligard.controller("DateWidgetCtrl", [
   '$scope', "dateWidgetService",
   function($scope, dateWidgetService){

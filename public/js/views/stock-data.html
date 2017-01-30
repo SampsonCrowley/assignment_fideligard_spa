@@ -1,6 +1,16 @@
-<div class="panel panel-default">
+<div id="stock-panel" class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title">Stocks for {{ currentDate | date:'dd/MM/yyyy' }}</h3>
+    <div class="row">
+      <div class="col-xs-6">
+        <h3 class="panel-title">Stocks for {{ currentDate | date:'MMM dd, yyyy' }}</h3>
+      </div>
+      <div class="col-xs-6">
+        <div class="input-group">
+          <span class="input-group-addon">Filter: </span>
+          <input type="text" class="form-control" ng-model="symbolFilter">
+        </div>
+      </div>
+    </div>
   </div>
   <div class="panel-body">
     <table class="table">
@@ -15,7 +25,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="quote in quotes" stock-data="quote"></tr>
+        <tr ng-repeat="quote in quotes | symbol:symbolFilter" stock-data="quote"></tr>
       </tbody>
     </table>
     <div id="loading-bar-container"></div>

@@ -1,4 +1,4 @@
-<form name="tradeForm" ng-submit="validateTrade(tradeForm.$valid, stock, tradeForm)">
+<form name="tradeForm" ng-submit="validateTrade(tradeForm.$valid, stock, tradeForm)" novalidate>
   <div class="row">
     <div class="col-xs-8">
       <div class="form-group">
@@ -17,10 +17,10 @@
       </div>
       <div class="form-group">
         <label class="radio-inline">
-          <input type="radio" value="true" name="buy" ng-model="stock.buy" required> Buy
+          <input type="radio" value="buy" name="buy" ng-model="stock.buy" required> Buy
         </label>
         <label class="radio-inline">
-          <input type="radio" value="false" name="buy" ng-model="stock.buy" required> Sell
+          <input type="radio" value="sell" name="buy" ng-model="stock.buy" required> Sell
         </label>
       </div>
       <div ng-hide="true">
@@ -34,7 +34,7 @@
       </div>
     </div>
     <div class="col-xs-4">
-      <h3>Available Cash: {{ user.balance | currency }}</h3>
+      <h3>Available Cash: {{ cash.value | currency }}</h3>
       <h4>Order Status: {{ tradeForm.$valid ? "Valid" : "Invalid" }}</h4>
     </div>
   </div>

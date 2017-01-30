@@ -4,64 +4,44 @@ fideligard.factory('stockDataService', [
     var _raw = {},
      _data = {},
      _today, _oneDayAgo, _sevenDaysAgo, _thirtyDaysAgo;
-    // baseString = "https://www.quandl.com/api/v3/datatables/WIKI/PRICES.json?api_key=",
-    // API_KEY = "B4sTzjR9SaZDuvJpvq4W";
-    // endString = "&date.gte=2014-01­-01&date.lte=2014-­12-­31&qopts.columns=ticker,date,open,high,low,close,volume",
-    // fullString = baseString + API_KEY + endString;
-    // https://www.quandl.com/api/v3/datatables/WIKI/PRICES.json?api_key=B4sTzjR9SaZDuvJpvq4W&date.gte=2014-01­-01&date.lte=2014-­12-­31&qopts.columns=ticker,date,open,high,low,close,volume
-
-    // var loop = function loop(){
-    //   var arr = [];
-    //   for(var i = 0; i < _symbols.length; i++){
-    //     var str = "where%20symbol%3D%22" + _symbols[i] + "%22";
-    //     arr.push($http.get(baseString + str + endString))
-    //   }
-    //   return arr;
-    // }
 
     var setRawData = function setRawData(data){
-      for(date in data){
+      for(var date in data){
         _raw[date] = data[date];
       }
     }
 
     var getStockData = function getStockData(day){
-
       if(_.isEmpty(_raw) || (day && !_raw[day])){
         var dStr = (day ? '/' + day : "")
         return $http.get('/stocks' + dStr).then(function(resp){
-          // for(var i = 0; i < datas.length; i++){
-          //   setData(datas[i].data.query.results.quote)
-          // }
           setRawData(resp.data);
           return _raw
         })
       }
-      return $q(function(resolve){ resolve(_raw) });
+      return $q.resolve(_raw);
     }
 
     var _clearData = function _clearData(){
-      for(sym in _data){
-        delete _data[sym]
+      for(var sym in _data){
+        angular.copy({ symbol: sym }, _data[sym])
       }
     }
 
     var updateData = function updateData(date){
       _clearData();
-      $timeout(function (){
-        _today = _minusDays(date, 0),
-        _oneDayAgo = _minusDays(date, 1),
-        _sevenDaysAgo = _minusDays(date, 7),
-        _thirtyDaysAgo = _minusDays(date, 30);
-        // angular.copy({}, _data);
-        requery();
-      })
+      _today = _minusDays(date, 0),
+      _oneDayAgo = _minusDays(date, 1),
+      _sevenDaysAgo = _minusDays(date, 7),
+      _thirtyDaysAgo = _minusDays(date, 30);
+      return requery().then(function(){
+        return _data;
+      });
 
-      return _data;
     }
 
     var requery = function requery(){
-      $q.all([
+      return $q.all([
         getStockData(_today),
         getStockData(_oneDayAgo),
         getStockData(_sevenDaysAgo),
@@ -73,8 +53,8 @@ fideligard.factory('stockDataService', [
     }
 
     var setData = function setData(){
-      for(symbol in _raw[_today]){
-        _data[symbol] = { symbol: symbol };
+      for(var symbol in _raw[_today]){
+        if(!_data[symbol]) _data[symbol] = { symbol: symbol };
         var high = _raw[_today][symbol].high;
         _data[symbol].price = high;
         _data[symbol].one = _raw[_oneDayAgo][symbol] ? high - _raw[_oneDayAgo][symbol] .high : "N/A";
@@ -89,7 +69,13 @@ fideligard.factory('stockDataService', [
           resolve(updateData(dateWidgetService.get()))
         })
       }
-      return $q(function(resolve){ resolve(_data) });
+      return $q.resolve(_data);
+    }
+
+    var findData = function findData(symbol){
+      return getData().then(function(){
+        return _data[symbol]
+      })
     }
 
     var _minusDays = function _minusDays(date, numDays) {
@@ -100,6 +86,7 @@ fideligard.factory('stockDataService', [
 
     return {
       get: getData,
+      find: findData,
       update: updateData
     };
   }

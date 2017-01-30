@@ -1,16 +1,7 @@
 fideligard.factory('dateWidgetService', [
-  '$rootScope',
-  function($rootScope){
-    // var _date = {
-    //   value: new Date('2014', '01', '01')
-    // }
-    // getDate = function getDate(){
-    //   return _date
-    // }
-    //
-    // parseDate = function parseDate(str){
-    //   return Date.parse(_date.value);
-    // }
+  '$rootScope', '$timeout',
+  function($rootScope,$timeout){
+
     var _date = new Date();
 
     getDate = function getDate(){

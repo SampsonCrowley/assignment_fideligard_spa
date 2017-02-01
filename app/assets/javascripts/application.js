@@ -11,7 +11,6 @@
 // about supported directives.
 //
 //= require angular
-//= require vss-scrollbar.min.js
 //= require ui-bootstrap.min.js
 //= require angular-ui-router.min.js
 //= require lodash.core.min.js

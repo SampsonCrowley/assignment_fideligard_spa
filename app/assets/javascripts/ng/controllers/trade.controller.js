@@ -1,11 +1,18 @@
 fideligard.controller('TradeCtrl', [
-  '$scope', '$stateParams', '$state', 'stockDataService', 'transactionService', 'portfolioService',
-  function($scope, $stateParams, $state, stockDataService, transactionService, portfolioService){
+  '$scope', '$stateParams', '$state', 'Flash', 'stockDataService', 'tradeService', 'portfolioService',
+  function($scope, $stateParams, $state, Flash, stockDataService, tradeService, portfolioService){
+    _portfolio = {}
     $scope.stock = {
       symbol: $stateParams.symbol,
       quantity: 1,
       buy: "buy"
     };
+
+    $scope.valid = false;
+
+    portfolioService.portfolio().then(function(portfolio){
+      _portfolio = portfolio;
+    })
 
     var reset = function(){
       $scope.stock = {
@@ -23,26 +30,29 @@ fideligard.controller('TradeCtrl', [
         $scope.cash = cash;
       })
 
-    stockDataService.get().then(function(data){
+    stockDataService.current().then(function(data){
       $scope.stocks = data;
       $scope.selectedStock = $scope.stocks[$scope.stock.symbol]
-      $scope.updateCost()
     })
 
     $scope.findStock = function findStock(symbol){
       $scope.selectedStock = $scope.stocks[symbol]
-      $scope.updateCost();
     }
 
-    $scope.updateCost = function updateCost(){
+    updateCost = function updateCost(){
       if($scope.selectedStock){
         $scope.stock.cost = $scope.selectedStock.price * $scope.stock.quantity
       }
+      $scope.updateValid()
     }
 
+    $scope.$watch('selectedStock',updateCost, true)
+    $scope.$watch('stock',updateCost, true)
+
+
     $scope.validateTrade = function(valid, data, form){
-      if(valid){
-        transactionService.add(data)
+      // if(valid && $scope.valid){
+        tradeService.add(data)
           .then(function(resp){
             reset(data);
             form.$setPristine();
@@ -51,8 +61,28 @@ fideligard.controller('TradeCtrl', [
           })
           .catch(function(rej){
             console.log("caught", rej)
+            var id = Flash.create('danger', rej);
         });
+      // } else {
+      //   var id = Flash.create('danger', rej);
+      // }
+    }
 
+    $scope.updateValid = function updateValid(){
+      if($scope.stock.buy === 'buy'){
+        if($scope.selectedStock && ($scope.selectedStock.price * $scope.stock.quantity) <= $scope.cash.value){
+          $scope.valid = true
+        } else{
+          $scope.valid = false
+        }
+      }
+      else {
+        var stock = _portfolio[$scope.selectedStock.symbol]
+        if(stock && $scope.stock.quantity <= stock.quantity){
+          $scope.valid = true
+        } else {
+          $scope.valid = false
+        }
       }
     }
 

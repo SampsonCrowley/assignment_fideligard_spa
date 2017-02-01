@@ -1,10 +1,20 @@
 <div class="row">
-  <div class="col-xs-12">
+  <div class="col-lg-6 col-md-4 col-xs-12">
     <p class="input-group">
-      <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="selectedDate" is-open="opened" datepicker-options="dateOptions" close-text="Close" ng-click="toggle()" ng-change="updateDate(selectedDate)"/>
+      <input type="text" class="form-control" uib-datepicker-popup="yyyy/MM/dd" ng-model="selectedDate" is-open="opened" datepicker-options="dateOptions" ng-model-options="{timezone: 'utc'}" close-text="Close" ng-click="toggle()" ng-change="updateDate(selectedDate)" date-neutral/>
       <span class="input-group-btn">
         <button type="button" class="btn btn-default" ng-click="toggle()"><i class="glyphicon glyphicon-calendar"></i></button>
       </span>
+    </p>
+  </div>
+  <div class="col-lg-3 col-md-4">
+    <p>
+      <button type="button" class="btn btn-primary btn-block" ng-click="current()"><i class="glyphicon glyphicon-calendar"></i> Go To Current</button>
+    </p>
+  </div>
+  <div class="col-lg-3 col-md-4">
+    <p>
+      <button type="button" class="btn btn-success btn-block" ng-click="advance()"><i class="glyphicon glyphicon-calendar"></i> Advance</button>
     </p>
   </div>
 </div>

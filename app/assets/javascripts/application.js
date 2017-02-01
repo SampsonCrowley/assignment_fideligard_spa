@@ -11,10 +11,12 @@
 // about supported directives.
 //
 //= require angular
+//= require vss-scrollbar.min.js
 //= require ui-bootstrap.min.js
 //= require angular-ui-router.min.js
 //= require lodash.core.min.js
 //= require loading-bar.min.js
+//= require angular-flash.min.js
 //= require angular-memory-stats.min.js
 //= require angular
 //= require_tree .

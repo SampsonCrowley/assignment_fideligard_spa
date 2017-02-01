@@ -3,30 +3,98 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 @import "bootstrap-sprockets";
 @import "bootstrap";
-.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
-body {
-  padding: 100px 0 50px 0;
+
+@media (min-width: $screen-sm-min) {
+  .pull-right-sm {
+    float: right;
+  }
+  .pull-left-sm {
+    float: left;
+  }
+}
+@media (min-width: $screen-md-min) {
+  .pull-right-md {
+    float: right;
+  }
+  .pull-left-md {
+    float: left;
+  }
+}
+@media (min-width: $screen-lg-min) {
+  .pull-right-lg {
+    float: right;
+  }
+  .pull-left-lg {
+    float: left;
+  }
 }
 
-#stock-panel{
-  max-height: calc(100vh - 150px);
+.full-page{
+  position:fixed;
+  width: 100vw;
+  height: 100vh;
+  overflow-y: scroll;
+  z-index: 1000;
+  background: rgba(243,249,241,0.6);
+}
+
+.nav, .pagination, .carousel, .panel-title a, .pointable { cursor: pointer; }
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #FFF;
+}
+
+html, body {
+  height: 100%;
+}
+
+
+body {
+  background: rgb(243,249,241);
+  background: -moz-linear-gradient(-45deg, rgb(243,249,241) 0%, rgb(179,208,169) 67%, rgb(179,208,169) 100%);
+  background: -webkit-gradient(left top, right bottom, color-stop(0%, rgb(243,249,241)), color-stop(67%, rgb(179,208,169)), color-stop(100%, rgb(179,208,169)));
+  background: -webkit-linear-gradient(-45deg, rgb(243,249,241) 0%, rgb(179,208,169) 67%, rgb(179,208,169) 100%);
+  background: -o-linear-gradient(-45deg, rgb(243,249,241) 0%, rgb(179,208,169) 67%, rgb(179,208,169) 100%);
+  background: -ms-linear-gradient(-45deg, rgb(243,249,241) 0%, rgb(179,208,169) 67%, rgb(179,208,169) 100%);
+  background: linear-gradient(135deg, rgb(243,249,241) 0%, rgb(179,208,169) 67%, rgb(179,208,169) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f3f9f1', endColorstr='#b3d0a9', GradientType=1 );
+
+}
+
+.panel{
+  max-height: calc(100vh - 194px);
   overflow: hidden;
   position: relative;
-  padding-top: 55px;
+  margin-bottom: 0;
   .panel-heading {
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin-bottom: 20px;
-    width: 100%;
+    // position: absolute;
+    // top: 0;
+    // left: 0;
+    // margin-bottom: 20px;
+    // width: 100%;
+
     .panel-title {
       font-size: 30px;
     }
   }
   .panel-body{
-    height: calc(100vh - 200px);
+    padding-bottom: 100px;
+    height: calc(100vh - 249px);
     overflow: auto;
   }
+}
+
+#stock-panel{
+  max-height: calc(100vh - 150px);
+  .panel-body{
+    height: calc(100vh - 205px);
+    overflow: auto;
+  }
+}
+
+#stock-data-body .table {
+  // position: absolute;
+
 }
 
 #loading-bar,

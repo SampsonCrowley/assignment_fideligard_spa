@@ -1,93 +1,110 @@
 fideligard.factory('stockDataService', [
-  '$http', '$q', '$timeout', '_', 'dateWidgetService',
-  function($http, $q, $timeout, _, dateWidgetService){
-    var _raw = {},
-     _data = {},
-     _today, _oneDayAgo, _sevenDaysAgo, _thirtyDaysAgo;
+  '$http', '$q', '$timeout', '$rootScope', '_', 'dateService', 'rawDataService',
+  function($http, $q, $timeout, $rootScope, _, dateService, rawDataService){
+    var _data = {
+          historic: {},
+          current: {}
+        },
+        _raw = {},
+        _today, _oneDayAgo, _sevenDaysAgo, _thirtyDaysAgo;
 
-    var setRawData = function setRawData(data){
-      for(var date in data){
-        _raw[date] = data[date];
+    rawDataService.get().then(function(raw){
+      _raw = raw
+    })
+
+    var rawData = rawDataService.get
+
+    var _clearData = function _clearData(type){
+      for(var sym in _data[type]){
+        angular.copy({ symbol: sym }, _data[type][sym])
       }
     }
 
-    var getStockData = function getStockData(day){
-      if(_.isEmpty(_raw) || (day && !_raw[day])){
-        var dStr = (day ? '/' + day : "")
-        return $http.get('/stocks' + dStr).then(function(resp){
-          setRawData(resp.data);
-          return _raw
-        })
-      }
-      return $q.resolve(_raw);
+    var _dataType = function(){
+      return dateService.valid() ? "current" : "historic"
     }
 
-    var _clearData = function _clearData(){
-      for(var sym in _data){
-        angular.copy({ symbol: sym }, _data[sym])
-      }
-    }
+    var updateData = function updateData(date, type){
+      var type = type || _dataType();
+      _clearData("historic");
 
-    var updateData = function updateData(date){
-      _clearData();
-      _today = _minusDays(date, 0),
-      _oneDayAgo = _minusDays(date, 1),
-      _sevenDaysAgo = _minusDays(date, 7),
-      _thirtyDaysAgo = _minusDays(date, 30);
-      return requery().then(function(){
-        return _data;
-      });
+      return $timeout(function(){
+        if(type === "current") {
+          _clearData(type);
+        }
+        _today = _minusDays(date, 0),
+        _oneDayAgo = _minusDays(date, 1),
+        _sevenDaysAgo = _minusDays(date, 7),
+        _thirtyDaysAgo = _minusDays(date, 30);
+        return requery(type).then(function(){
+          return _data[type];
+        });
+      })
+
 
     }
 
-    var requery = function requery(){
+    var requery = function requery(type){
       return $q.all([
-        getStockData(_today),
-        getStockData(_oneDayAgo),
-        getStockData(_sevenDaysAgo),
-        getStockData(_thirtyDaysAgo)
+        rawData(_today),
+        rawData(_oneDayAgo),
+        rawData(_sevenDaysAgo),
+        rawData(_thirtyDaysAgo)
       ])
       .then(function(){
-        setData()
+        setData(type)
       });
     }
 
-    var setData = function setData(){
+    var setData = function setData(type){
       for(var symbol in _raw[_today]){
-        if(!_data[symbol]) _data[symbol] = { symbol: symbol };
+        if(!_data[type][symbol]) _data[type][symbol] = { symbol: symbol };
         var high = _raw[_today][symbol].high;
-        _data[symbol].price = high;
-        _data[symbol].one = _raw[_oneDayAgo][symbol] ? high - _raw[_oneDayAgo][symbol] .high : "N/A";
-        _data[symbol].seven = _raw[_sevenDaysAgo][symbol] ? high - _raw[_sevenDaysAgo][symbol].high : "N/A";
-        _data[symbol].thirty = _raw[_thirtyDaysAgo][symbol] ? high - _raw[_thirtyDaysAgo][symbol].high : "N/A";
+        _data[type][symbol].price = high;
+        _data[type][symbol].one = _raw[_oneDayAgo][symbol] ? high - _raw[_oneDayAgo][symbol] .high : "N/A";
+        _data[type][symbol].seven = _raw[_sevenDaysAgo][symbol] ? high - _raw[_sevenDaysAgo][symbol].high : "N/A";
+        _data[type][symbol].thirty = _raw[_thirtyDaysAgo][symbol] ? high - _raw[_thirtyDaysAgo][symbol].high : "N/A";
       }
+      if(type === "current") {
+        setData("historic");
+        $rootScope.$broadcast('stockChange');
+      }
+      
     }
 
-    var getData = function getData(){
-      if(_.isEmpty(_data)){
-        return $q(function(resolve){
-          resolve(updateData(dateWidgetService.get()))
-        })
+    var getData = function getData(type){
+      type = type || _dataType()
+      if(_.isEmpty(_data[type])){
+        return $q.resolve(updateData(dateService.get(), type))
       }
-      return $q.resolve(_data);
+      return $q.resolve(_data[type]);
     }
 
-    var findData = function findData(symbol){
-      return getData().then(function(){
-        return _data[symbol]
+    var findData = function findData(symbol, type){
+      type = type || _dataType();
+      return getData(type).then(function(){
+        return _data[type][symbol]
       })
     }
 
     var _minusDays = function _minusDays(date, numDays) {
-      var dateCopy = new Date(date);
-      var newDate = new Date(dateCopy.setDate(dateCopy.getDate() - numDays));
-      return newDate.toISOString().slice(0,10);
+      return dateService.calculate(date, (numDays * -1), true)
+    }
+
+    var currentData = function currentData(){
+      return getData("current")
+    }
+
+    var historicData = function historicData(){
+      return getData("historic")
     }
 
     return {
       get: getData,
       find: findData,
-      update: updateData
+      update: updateData,
+      current: currentData,
+      historic: historicData
     };
   }
 ])

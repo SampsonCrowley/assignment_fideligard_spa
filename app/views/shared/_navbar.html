@@ -1,0 +1,31 @@
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+      <button ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed" class="navbar-toggle collapsed">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    <ul class="nav navbar-nav pull-left">
+      <li>
+        <a ui-sref="portfolio">
+          Days Remaining: <span ui-view="dayCount"></span>
+        </a>
+      </li>
+    </ul>
+    <div id="navbar" uib-collapse="navCollapsed" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+          <a ui-sref="portfolio">
+            Current Balance: <span ui-view="balance"></span>
+          </a>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a ui-sref="portfolio">Portfolio</a></li>
+        <li><a ui-sref="transactions.index">Transactions</a></li>
+        <li><a ui-sref="trade">Trade</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container-fluid -->
+</nav>

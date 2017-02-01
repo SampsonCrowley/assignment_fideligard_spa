@@ -34,17 +34,22 @@ class Quandle
     json = []
     start = days
     loop do
-      str = "#{QUANDLE}&date=#{days.days.ago.strftime("%Y-%m-%d")}"
-      if(json = exists(str))
-        break
+      begin
+        str = "#{QUANDLE}&date=#{days.days.ago.strftime("%Y-%m-%d")}"
+        if(json = exists(str))
+          break
+        end
+        res = JSON.parse(HTTParty.get(str).body)
+        data = res["datatable"]["data"]
+        if data.length > 0 || days - start > 3
+          json = normalize(data)
+          break
+        end
+      rescue
+        puts res
+      ensure
+        days += 1
       end
-      res = JSON.parse(HTTParty.get(str).body)
-      res = res["datatable"]["data"]
-      if res.length > 0 || days - start > 3
-        json = normalize(res)
-        break
-      end
-      days += 1
     end
     [json, days]
   end

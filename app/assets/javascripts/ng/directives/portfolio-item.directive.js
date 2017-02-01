@@ -4,7 +4,7 @@ fideligard.directive('portfolioItem', [
     var setup = function setup(s){
       s.stock = {}
       stockDataService.find(s.portfolioItem.symbol).then(function(stock){
-        angular.copy(stock, s.stock);
+        s.stock = stock
       })
 
       s.currentValue = function currentValue(){

@@ -1,10 +1,22 @@
 <div class="panel panel-default">
-  <div class="col-xs-12">
-    <h2 ui-view="userDataHeader"></h2>
+  <div class="panel-heading">
+    <h2 class="panel-title">
+      <div class="row">
+        <div class="col-xs-6 col-md-8">
+          <span ui-view="userDataHeader"></span>
+        </div>
+        <div class="col-xs-6 col-md-4">
+          <select class="form-control" ng-model="selectedRoute" ng-change="newRoute(selectedRoute)" >
+            <option value="portfolio">Portfolio</option>
+            <option value="transactions.index">Transactions</option>
+            <option value="trade">Trade</option>
+          </select>
+        </div>
+      </div>
+    </h2>
+
   </div>
   <div class="panel-body">
     <ui-view></ui-view>
-  </div>
-  <div class="panel-footer">
   </div>
 </div>

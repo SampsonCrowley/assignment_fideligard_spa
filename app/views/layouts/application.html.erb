@@ -4,31 +4,20 @@
     <base href="/#/">
     <title>Fideligard</title>
     <%= csrf_meta_tags %>
+    <meta name="viewport" content="width=device-width">
 
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
   </head>
 
   <body novalidate>
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <span class="navbar-brand">Fideligard</span>
-        </div>
-
-        <ul class="nav navbar-nav navbar-right">
-          <li><a ui-sref="portfolio">Portfolio</a></li>
-          <li><a ui-sref="transactions.index">Transactions</a></li>
-          <li><a ui-sref="trade">Trade</a></li>
-        </ul>
-      </div><!-- /.container-fluid -->
-    </nav>
+    <div ui-view="overlay"></div>
     <div class="container-fluid">
+      <h1 class="title">Fideligard Portfolio Simulator</h1>
+      <%= render partial: 'shared/navbar' %>
+      <flash-message></flash-message>
       <div class="row">
-        <div class="col-xs-5">
-          <section class="bordered" ui-view="stockData"></section>
-        </div>
-        <div class="col-xs-7">
+        <div class="col-md-7 pull-right-md">
           <div class="row">
             <div class="col-xs-12">
               <section class="bordered" ui-view="dateWidget"></section>
@@ -39,6 +28,9 @@
               <section class="bordered" ui-view="userData"></section>
             </div>
           </div>
+        </div>
+        <div class="col-md-5 pull-left-md">
+          <section class="bordered" ui-view="stockData"></section>
         </div>
       </div>
     </div>

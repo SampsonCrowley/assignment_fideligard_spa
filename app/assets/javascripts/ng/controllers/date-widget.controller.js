@@ -1,18 +1,30 @@
 fideligard.controller("DateWidgetCtrl", [
-  '$scope', "dateWidgetService",
-  function($scope, dateWidgetService){
-    $scope.selectedDate = dateWidgetService.get();
+  '$scope', '$timeout', 'dateService',
+  function($scope, $timeout, dateService){
+    var setDate = function setDate(){
+      $scope.selectedDate = dateService.get();
+    }
+    setDate();
 
     $scope.dateOptions = {
-      minDate: new Date('2015-01-01 00:00:00'),
-      maxDate: new Date(),
+      minDate: dateService.min(),
+      maxDate: dateService.max(),
       initDate: $scope.selectedDate
     }
 
+    $scope.current = function current(){
+      dateService.farthest()
+      setDate()
+    }
+
+    $scope.advance = function current(){
+      dateService.next()
+      $scope.dateOptions.maxDate = dateService.max()
+      setDate()
+    }
+
     $scope.updateDate = function updateDate(date){
-      setTimeout(function(){
-        dateWidgetService.set(date);
-      })
+      dateService.set(date);
     }
 
     $scope.toggle = function toggle(){

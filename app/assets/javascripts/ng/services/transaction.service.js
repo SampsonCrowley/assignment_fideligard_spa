@@ -1,41 +1,27 @@
 fideligard.factory('transactionService', [
-  '$q', '_', 'dateWidgetService', 'stockDataService',
-  function($q, _, dateWidgetService, stockDataService){
-    var _transactions = {}, _stocks = {}, _id = 1;
+  '$q', '$rootScope',
+  function($q, $rootScope){
+    var _transactions = {}, _id = 0;
 
-    var _invalid = function _invalid(data){
-      return (
-        !data.symbol ||
-        !data.quantity
-      )
+    var _completeTransaction = function _completeTransaction(transaction){
+      _id++;
+      transaction.id = _id;
+      _transactions[_id] = transaction;
+      $rootScope.$broadcast('transaction');
+      return transaction.id;
     }
 
-    var newTransaction = function newTransaction(data){
-      return stockDataService.get().then(function(stocks){
-        _stocks = stocks;
-        var transaction = {
-          id: _id,
-          date: dateWidgetService.get(),
-          symbol: data.symbol,
-          quantity: data.quantity,
-          price: _stocks[data.symbol].price
-        }
-
-        if(data.buy === "buy"){
-          transaction.debit = transaction.price * transaction.quantity
-        } else {
-          transaction.credit = transaction.price * transaction.quantity
-        }
-
-        _transactions[_id] = transaction;
-        _id++;
-        return transaction.id;
-      })
+    _debitOrCredit = function _debitOrCredit(transaction){
+      if(transaction.type === "buy"){
+        transaction.debit = transaction.price * transaction.quantity
+      } else {
+        transaction.credit = transaction.price * transaction.quantity
+      }
     }
 
-    var addTransaction = function addTransaction(data){
-      if(_invalid(data)) return $q.reject("Transaction Invalid");
-      return newTransaction(data);
+    var addTransaction = function addTransaction(transaction){
+      _debitOrCredit(transaction);
+      return _completeTransaction(transaction);
     }
 
     var getTransactions = function getTransactions(){
@@ -51,10 +37,15 @@ fideligard.factory('transactionService', [
       })
     }
 
+    var countTransactions = function countTransactions(){
+      return _id;
+    }
+
     return {
       add: addTransaction,
       all: getTransactions,
-      get: getTransaction
+      get: getTransaction,
+      count: countTransactions
     }
   }
 ])

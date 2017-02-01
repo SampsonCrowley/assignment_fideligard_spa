@@ -1,1 +1,16 @@
-{{ transaction }}
+<h4><a ui-sref="transactions.index"><< View All transactions</a></h4>
+<div class="jumbotron">
+  <p>Transaction ID: {{ transaction.id }}</p>
+  <p>Stock Symbol: {{ transaction.symbol }}</p>
+  <p>Price Per Share: {{ transaction.price | currency }}</p>
+  <div ng-if="transaction.credit">
+    <p>Sale Total: {{ transaction.credit }}</p>
+  </div>
+  <div ng-if="transaction.debit">
+    <p>Total Cost: {{ transaction.debit | currency }}</p>
+    <p>Current Value: {{ stock.price * transaction.quantity | currency }}
+    <p><a ng-click="sell()">Quick Sell</a></p>
+  </div>
+
+</div>
+<h4><a ui-sref="transactions.index"><< View All transactions</a></h4>

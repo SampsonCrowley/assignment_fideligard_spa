@@ -1,4 +1,4 @@
-<table class="table table-striped table-hover table-bordered">
+<table class="table table-striped table-hover table-bordered table-responsive">
   <thead>
     <th>Cost Basis</th>
     <th>Current Value</th>
@@ -13,21 +13,22 @@
   </tbody>
 </table>
 
-<table class="table table-striped table-hover table-bordered">
+<table class="table table-striped table-hover table-bordered table-responsive">
   <thead>
-    <th>Symbol</th>
-    <th>Quantity</th>
-    <th>Cost Basis</th>
-    <th>Current Value</th>
-    <th>Profit</th>
-    <th>Current Price</th>
-    <th>1d</th>
-    <th>7d</th>
-    <th>30d</th>
+    <th ng-click="orderTable('symbol')">Symbol</th>
+    <th ng-click="orderTable('quantity')">Quantity</th>
+    <th ng-click="orderTable('cost')">Cost Basis</th>
+    <th ng-click="orderTable('value')">Current Value</th>
+    <th ng-click="orderTable('profit')">Profit</th>
+    <th ng-click="orderTable('price')">Current Price</th>
+    <th ng-click="orderTable('one')">1d</th>
+    <th ng-click="orderTable('seven')">7d</th>
+    <th ng-click="orderTable('thirty')">30d</th>
     <th>Trade?</th>
   </thead>
   <tbody>
     <tr portfolio-cash="cash"></tr>
-    <tr ng-repeat="item in portfolio" portfolio-item="item"></tr>
+    <!-- orderBy:orderPortfolio:direction -->
+    <tr ng-repeat="item in portfolio | objArray | portfolioSort:order:direction" portfolio-item="item" ng-if="item.quantity > 0"></tr>
   </tbody>
 </table>

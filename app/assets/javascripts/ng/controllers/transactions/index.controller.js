@@ -5,5 +5,9 @@ fideligard.controller("TransactionsIndexCtrl", [
       .then(function(transactions){
         $scope.transactions = transactions;
       })
+
+    $scope.viewTransaction = function viewTransaction(id){
+      $state.go('transactions.show', {id: id})
+    }
   }
 ])

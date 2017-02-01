@@ -1,0 +1,68 @@
+<div class="full-page" ng-if="showDemo">
+  <div class="col-md-6 col-md-offset-3 col-xs-12">
+      <div class="row">
+
+        <div class="jumbotron">
+        <div class="col-xs-12">
+          <h1>Welcome To Fideligard!</h1>
+          <div class="row">
+
+            <!-- left -->
+            <div class="col-xs-6">
+              <!-- Compete, Risk Free with $100,000 Virtual Cash -->
+              <div class="section-row">
+                <div class="section-icon first">
+                  <img src="http://i.investopedia.com/public/img/icon_simfeature1.png">
+                </div>
+                <div class="section-txt">
+                  <h3>Compete, Risk Free with $100,000 in Virtual Cash</h3>
+                  <p>Start with $100,000 in virtual cash and put your trading skills to the test!</p>
+                </div>
+              </div>
+            </div>
+            <!-- left //End -->
+
+            <!-- right -->
+            <div class="col-xs-6">
+              <!-- A Stepping Stone to the Real Markets -->
+              <div class="section-row">
+                <div class="section-icon first">
+                  <img src="http://i.investopedia.com/public/img/icon_simfeature4.png">
+                </div>
+                <div class="section-txt">
+                  <h3>A Stepping Stone to the Real Markets</h3>
+                  <p>The ideal platform to get your financial feet wet! Submit trades in a virtual environment before you start risking your own capital.</p>
+                </div>
+              </div>
+            </div>
+            <!-- right //End -->
+
+          </div>
+
+          <div class="row">
+            <div class="col-xs-12">
+              <h2>Getting Started</h2>
+              <p>Fideligard is a turn-based Stock Portfolio Simulator, where each day is a turn.</p>
+              <p>You may make as many trades as you want per day before advancing to the next. Once you advance, you cannot go back in time.</p>
+              <p>You CAN however, view any stock data from any days you have passed by selecting a date from the date-picker. To return to your current progress, click the "Go To Current" button at the top.</p>
+              <p>To advance to the next day of trading, click the "Advance" button</p>
+
+              <h2>End Of Game</h2>
+              <p>The Game Ends when you pass the last day of simulation</p>
+              <p>After the game ends, all of your existing stocks will be sold, and your profits will be calculated</p>
+              <p>When the game is over, you can look at your transaction history and portfolio, as well as historical stock data.  You will not be able to make any more trades.</p>
+
+            </div>
+          </div>
+          <button type="button" name="button" ng-click="completeDemo()">Ok, Let's Start!</button>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+<div class="full-page" ng-if="gameOver">
+
+</div>
